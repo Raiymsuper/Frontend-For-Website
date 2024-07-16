@@ -19,7 +19,7 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('http://localhost:8000/api/register/', formData)
+    axios.post('https://ub0-diligent-watt.circumeo-apps.net/api/register/', formData)
       .then(() => {
         setFormData({
           username: '',
