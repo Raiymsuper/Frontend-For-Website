@@ -31,7 +31,7 @@ function ItemShow() {
             Authorization: `Bearer ${token}`
         },
         method: "GET",
-        url: 'http://localhost:8000/api/items/'
+        url: 'https://ub0-diligent-watt.circumeo-apps.net/api/items/'
     })
       .then(response => {
         setItems(response.data);

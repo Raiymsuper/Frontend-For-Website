@@ -18,7 +18,7 @@ const Profile = () => {
 
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/profile/', {
+        const response = await axios.get('https://ub0-diligent-watt.circumeo-apps.net/api/profile/', {
           headers: {
             Authorization: `Bearer ${accessToken}`
           }
