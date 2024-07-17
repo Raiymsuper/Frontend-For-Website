@@ -61,7 +61,7 @@ function ItemShow() {
         <h2>Filters</h2>
         <label>
           Category:
-          <input type="text" name="category" value={filters.category} onChange={handleFilterChange} />
+          <input type="text" name="name" value={filters.name} onChange={handleFilterChange} />
         </label>
         <label>
           Price:
