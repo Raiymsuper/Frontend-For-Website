@@ -1,11 +1,8 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import Logout from './Logout';
-// import Cart from './Cart'
 import { CartContext } from '../context/CartContext';
-import {Link} from "react-router-dom";
-// import {useNavigate} from "react-router-dom";
-
+import { Link } from "react-router-dom";
 
 const buttonStyle = {
   backgroundColor: '#61dafb',
@@ -23,37 +20,63 @@ const buttonStyle = {
 
 function ItemShow() {
   const [items, setItems] = useState([]);
-    const token = localStorage.getItem('access_token');
+  const [filters, setFilters] = useState({ category: '', price: '' });
+  const token = localStorage.getItem('access_token');
   const { addToCart } = useContext(CartContext);
+
   useEffect(() => {
-    axios.request({
+    fetchItems();
+  }, [filters]);
+
+  const fetchItems = async () => {
+    try {
+      const response = await axios.request({
         headers: {
-            Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`
         },
         method: "GET",
-        url: 'https://ub0-diligent-watt.circumeo-apps.net/api/items/'
-    })
-      .then(response => {
-        setItems(response.data);
-      })
-      .catch(error => {
-        console.error('There was an error fetching the data!', error);
+        url: 'https://ub0-diligent-watt.circumeo-apps.net/api/items/',
+        params: filters
       });
-  }, []);
+      setItems(response.data);
+    } catch (error) {
+      console.error('There was an error fetching the data!', error);
+    }
+  };
+
+  const handleFilterChange = (e) => {
+    setFilters({
+      ...filters,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   return (
     <div className="App">
-        <Logout />
+      <Logout />
       <h1>Items List</h1>
       <Link to="/cart"><button>Your Cart</button></Link>
+
+      <div>
+        <h2>Filters</h2>
+        <label>
+          Category:
+          <input type="text" name="category" value={filters.category} onChange={handleFilterChange} />
+        </label>
+        <label>
+          Price:
+          <input type="number" name="price" value={filters.price} onChange={handleFilterChange} />
+        </label>
+      </div>
+
       <ul>
         {items.map(item => (
-            <li key={item.id}>
-                <h2>{item.name}</h2>
-                <p>{item.description}</p>
-                <p>Цена: {item.price}</p>
-                <button onClick={() => addToCart(item)}>Add to Cart</button>
-            </li>
+          <li key={item.id}>
+            <h2>{item.name}</h2>
+            <p>{item.description}</p>
+            <p>Price: {item.price}</p>
+            <button onClick={() => addToCart(item)}>Add to Cart</button>
+          </li>
         ))}
       </ul>
     </div>
@@ -61,4 +84,3 @@ function ItemShow() {
 }
 
 export default ItemShow;
-
