@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import Logout from './Logout';
 import { CartContext } from '../context/CartContext';
@@ -21,14 +21,8 @@ const buttonStyle = {
 function ItemShow() {
   const [items, setItems] = useState([]);
   const [filters, setFilters] = useState({ name: '', price: '' });
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
   const token = localStorage.getItem('access_token');
   const { addToCart } = useContext(CartContext);
-
-  useEffect(() => {
-    fetchItems();
-  }, [filters, page]);
 
   const fetchItems = async () => {
     try {
@@ -38,10 +32,9 @@ function ItemShow() {
         },
         method: "GET",
         url: 'https://ub0-diligent-watt.circumeo-apps.net/api/items/',
-        params: { ...filters, page }
+        params: filters
       });
-      setItems(response.data.results);
-      setTotalPages(response.data.total_pages);
+      setItems(response.data);
     } catch (error) {
       console.error('There was an error fetching the data!', error);
     }
@@ -56,16 +49,7 @@ function ItemShow() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setPage(1); // Reset to first page on new filter
     fetchItems();
-  };
-
-  const handleNextPage = () => {
-    setPage(prevPage => Math.min(prevPage + 1, totalPages));
-  };
-
-  const handlePreviousPage = () => {
-    setPage(prevPage => Math.max(prevPage - 1, 1));
   };
 
   return (
@@ -79,16 +63,16 @@ function ItemShow() {
         <form onSubmit={handleSubmit}>
           <label>
             Name:
-            <input type="text" name="name" value={filters.name}/>
+            <input type="text" name="name" value={filters.name} onChange={handleFilterChange} />
           </label>
           <label>
             Price:
-            <input type="number" name="price" value={filters.price}/>
+            <input type="number" name="price" value={filters.price} onChange={handleFilterChange} />
           </label>
           <button type="submit">Apply Filters</button>
         </form>
       </div>
-      {/**/}
+
       <ul>
         {items.map(item => (
           <li key={item.id}>
@@ -99,12 +83,6 @@ function ItemShow() {
           </li>
         ))}
       </ul>
-
-      <div>
-        <button onClick={handlePreviousPage} disabled={page === 1}>Previous</button>
-        <span>Page {page} of {totalPages}</span>
-        <button onClick={handleNextPage} disabled={page === totalPages}>Next</button>
-      </div>
     </div>
   )
 }
