@@ -59,9 +59,15 @@ function ItemShow() {
     setSort(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleFilterSubmit = (e) => {
     e.preventDefault();
     setPage(1); // Reset to first page on new filter
+    fetchItems();
+  };
+
+  const handleSortSubmit = (e) => {
+    e.preventDefault();
+    setPage(1); // Reset to first page on new sort
     fetchItems();
   };
 
@@ -80,8 +86,8 @@ function ItemShow() {
       <Link to="/cart"><button>Your Cart</button></Link>
 
       <div>
-        <h2>Filters and Sorting</h2>
-        <form onSubmit={handleSubmit}>
+        <h2>Filters</h2>
+        <form onSubmit={handleFilterSubmit}>
           <label>
             Name:
             <input type="text" name="name" value={filters.name} onChange={handleFilterChange} />
@@ -90,6 +96,13 @@ function ItemShow() {
             Price:
             <input type="number" name="price" value={filters.price} onChange={handleFilterChange} />
           </label>
+          <button type="submit">Apply Filters</button>
+        </form>
+      </div>
+
+      <div>
+        <h2>Sort By</h2>
+        <form onSubmit={handleSortSubmit}>
           <label>
             Sort By:
             <select value={sort} onChange={handleSortChange}>
@@ -98,7 +111,7 @@ function ItemShow() {
               <option value="price">Price</option>
             </select>
           </label>
-          <button type="submit">Apply</button>
+          <button type="submit">Sort</button>
         </form>
       </div>
 
