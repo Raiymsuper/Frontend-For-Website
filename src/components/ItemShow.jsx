@@ -68,6 +68,7 @@ function ItemShow() {
             Price:
             <input type="number" name="price" value={filters.price}/>
           </label>
+          <button type="submit">Login</button>
         </form>
       </div>
 
