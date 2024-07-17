@@ -79,11 +79,11 @@ function ItemShow() {
         <form onSubmit={handleSubmit}>
           <label>
             Name:
-            <input type="text" name="name" value={filters.name} onChange={handleFilterChange} />
+            <input type="text" name="name" value={filters.name}/>
           </label>
           <label>
             Price:
-            <input type="number" name="price" value={filters.price} onChange={handleFilterChange} />
+            <input type="number" name="price" value={filters.price}/>
           </label>
           <button type="submit">Apply Filters</button>
         </form>
