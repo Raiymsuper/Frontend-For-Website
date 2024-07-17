@@ -20,7 +20,7 @@ const buttonStyle = {
 
 function ItemShow() {
   const [items, setItems] = useState([]);
-  const [filters, setFilters] = useState({ category: '', price: '' });
+  const [filters, setFilters] = useState({ name: '', price: '' });
   const token = localStorage.getItem('access_token');
   const { addToCart } = useContext(CartContext);
 
