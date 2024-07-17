@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import Logout from './Logout';
 import { CartContext } from '../context/CartContext';
@@ -24,10 +24,6 @@ function ItemShow() {
   const token = localStorage.getItem('access_token');
   const { addToCart } = useContext(CartContext);
 
-  useEffect(() => {
-    fetchItems();
-  }, [filters]);
-
   const fetchItems = async () => {
     try {
       const response = await axios.request({
@@ -51,6 +47,11 @@ function ItemShow() {
     });
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    fetchItems();
+  };
+
   return (
     <div className="App">
       <Logout />
@@ -59,16 +60,16 @@ function ItemShow() {
 
       <div>
         <h2>Filters</h2>
-        <form onSubmit={handleFilterChange}>
+        <form onSubmit={handleSubmit}>
           <label>
             Name:
-            <input type="text" name="name" value={filters.name}/>
+            <input type="text" name="name" value={filters.name} onChange={handleFilterChange} />
           </label>
           <label>
             Price:
-            <input type="number" name="price" value={filters.price}/>
+            <input type="number" name="price" value={filters.price} onChange={handleFilterChange} />
           </label>
-          <button type="submit">Login</button>
+          <button type="submit">Apply Filters</button>
         </form>
       </div>
 
@@ -85,5 +86,6 @@ function ItemShow() {
     </div>
   )
 }
-//
+
 export default ItemShow;
+
