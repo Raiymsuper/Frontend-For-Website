@@ -107,8 +107,10 @@ function ItemShow() {
             Sort By:
             <select value={sort} onChange={handleSortChange}>
               <option value="">Select</option>
-              <option value="name">Name</option>
-              <option value="price">Price</option>
+              <option value="name">Name (A-Z)</option>
+              <option value="-name">Name (Z-A)</option>
+              <option value="price">Price (Low to High)</option>
+              <option value="-price">Price (High to Low)</option>
             </select>
           </label>
           <button type="submit">Sort</button>
