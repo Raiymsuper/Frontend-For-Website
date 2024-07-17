@@ -59,14 +59,16 @@ function ItemShow() {
 
       <div>
         <h2>Filters</h2>
-        <label>
-          Category:
-          <input type="text" name="name" value={filters.name} onChange={handleFilterChange} />
-        </label>
-        <label>
-          Price:
-          <input type="number" name="price" value={filters.price} onChange={handleFilterChange} />
-        </label>
+        <form onSubmit={handleFilterChange}>
+          <label>
+            Name:
+            <input type="text" name="name" value={filters.name}/>
+          </label>
+          <label>
+            Price:
+            <input type="number" name="price" value={filters.price}/>
+          </label>
+        </form>
       </div>
 
       <ul>
