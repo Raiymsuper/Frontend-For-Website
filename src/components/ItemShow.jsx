@@ -54,11 +54,6 @@ function ItemShow() {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setPage(1); // Reset to first page on new filter
-    fetchItems();
-  };
 
   const handleNextPage = () => {
     setPage(prevPage => Math.min(prevPage + 1, totalPages));
@@ -76,7 +71,6 @@ function ItemShow() {
 
       <div>
         <h2>Filters</h2>
-        <form onSubmit={handleSubmit}>
           <label>
             Name:
             <input type="text" name="name" value={filters.name} onChange={handleFilterChange} />
@@ -85,8 +79,6 @@ function ItemShow() {
             Price:
             <input type="number" name="price" value={filters.price} onChange={handleFilterChange} />
           </label>
-          <button type="submit">Apply Filters</button>
-        </form>
       </div>
 
       <ul>
