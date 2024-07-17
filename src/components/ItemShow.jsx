@@ -88,7 +88,7 @@ function ItemShow() {
           <button type="submit">Apply Filters</button>
         </form>
       </div>
-
+      {/**/}
       <ul>
         {items.map(item => (
           <li key={item.id}>
