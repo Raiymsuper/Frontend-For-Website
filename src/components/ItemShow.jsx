@@ -21,7 +21,6 @@ const buttonStyle = {
 function ItemShow() {
   const [items, setItems] = useState([]);
   const [filters, setFilters] = useState({ name: '', price: '' });
-  const [sort, setSort] = useState('');
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const token = localStorage.getItem('access_token');
@@ -29,7 +28,7 @@ function ItemShow() {
 
   useEffect(() => {
     fetchItems();
-  }, [filters, sort, page]);
+  }, [filters, page]);
 
   const fetchItems = async () => {
     try {
@@ -39,7 +38,7 @@ function ItemShow() {
         },
         method: "GET",
         url: 'https://ub0-diligent-watt.circumeo-apps.net/api/items/',
-        params: { ...filters, sort, page }
+        params: { ...filters, page }
       });
       setItems(response.data.results);
       setTotalPages(response.data.total_pages);
@@ -55,19 +54,9 @@ function ItemShow() {
     });
   };
 
-  const handleSortChange = (e) => {
-    setSort(e.target.value);
-  };
-
-  const handleFilterSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setPage(1); // Reset to first page on new filter
-    fetchItems();
-  };
-
-  const handleSortSubmit = (e) => {
-    e.preventDefault();
-    setPage(1); // Reset to first page on new sort
     fetchItems();
   };
 
@@ -87,7 +76,7 @@ function ItemShow() {
 
       <div>
         <h2>Filters</h2>
-        <form onSubmit={handleFilterSubmit}>
+        <form onSubmit={handleSubmit}>
           <label>
             Name:
             <input type="text" name="name" value={filters.name} onChange={handleFilterChange} />
@@ -97,23 +86,6 @@ function ItemShow() {
             <input type="number" name="price" value={filters.price} onChange={handleFilterChange} />
           </label>
           <button type="submit">Apply Filters</button>
-        </form>
-      </div>
-
-      <div>
-        <h2>Sort By</h2>
-        <form onSubmit={handleSortSubmit}>
-          <label>
-            Sort By:
-            <select value={sort} onChange={handleSortChange}>
-              <option value="">Select</option>
-              <option value="name">Name (A-Z)</option>
-              <option value="-name">Name (Z-A)</option>
-              <option value="price">Price (Low to High)</option>
-              <option value="-price">Price (High to Low)</option>
-            </select>
-          </label>
-          <button type="submit">Sort</button>
         </form>
       </div>
 
