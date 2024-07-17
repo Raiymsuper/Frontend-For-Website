@@ -21,6 +21,7 @@ const buttonStyle = {
 function ItemShow() {
   const [items, setItems] = useState([]);
   const [filters, setFilters] = useState({ name: '', price: '' });
+  const [sort, setSort] = useState('');
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const token = localStorage.getItem('access_token');
@@ -28,7 +29,7 @@ function ItemShow() {
 
   useEffect(() => {
     fetchItems();
-  }, [filters, page]);
+  }, [filters, sort, page]);
 
   const fetchItems = async () => {
     try {
@@ -38,7 +39,7 @@ function ItemShow() {
         },
         method: "GET",
         url: 'https://ub0-diligent-watt.circumeo-apps.net/api/items/',
-        params: { ...filters, page }
+        params: { ...filters, ordering: sort, page }
       });
       setItems(response.data.results);
       setTotalPages(response.data.total_pages);
@@ -54,6 +55,9 @@ function ItemShow() {
     });
   };
 
+  const handleSortChange = (e) => {
+    setSort(e.target.value);
+  };
 
   const handleNextPage = () => {
     setPage(prevPage => Math.min(prevPage + 1, totalPages));
@@ -71,14 +75,25 @@ function ItemShow() {
 
       <div>
         <h2>Filters</h2>
-          <label>
-            Name:
-            <input type="text" name="name" value={filters.name} onChange={handleFilterChange} />
-          </label>
-          <label>
-            Price:
-            <input type="number" name="price" value={filters.price} onChange={handleFilterChange} />
-          </label>
+        <label>
+          Name:
+          <input type="text" name="name" value={filters.name} onChange={handleFilterChange} />
+        </label>
+        <label>
+          Price:
+          <input type="number" name="price" value={filters.price} onChange={handleFilterChange} />
+        </label>
+      </div>
+
+      <div>
+        <h2>Sort By</h2>
+        <select name="sort" value={sort} onChange={handleSortChange}>
+          <option value="">None</option>
+          <option value="price">Price (Low to High)</option>
+          <option value="-price">Price (High to Low)</option>
+          <option value="name">Name (A to Z)</option>
+          <option value="-name">Name (Z to A)</option>
+        </select>
       </div>
 
       <ul>
@@ -100,5 +115,5 @@ function ItemShow() {
     </div>
   )
 }
-//
+
 export default ItemShow;
