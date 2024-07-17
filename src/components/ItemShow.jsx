@@ -21,6 +21,7 @@ const buttonStyle = {
 function ItemShow() {
   const [items, setItems] = useState([]);
   const [filters, setFilters] = useState({ name: '', price: '' });
+  const [sort, setSort] = useState('');
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const token = localStorage.getItem('access_token');
@@ -28,7 +29,7 @@ function ItemShow() {
 
   useEffect(() => {
     fetchItems();
-  }, [filters, page]);
+  }, [filters, sort, page]);
 
   const fetchItems = async () => {
     try {
@@ -38,7 +39,7 @@ function ItemShow() {
         },
         method: "GET",
         url: 'https://ub0-diligent-watt.circumeo-apps.net/api/items/',
-        params: { ...filters, page }
+        params: { ...filters, sort, page }
       });
       setItems(response.data.results);
       setTotalPages(response.data.total_pages);
@@ -52,6 +53,10 @@ function ItemShow() {
       ...filters,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const handleSortChange = (e) => {
+    setSort(e.target.value);
   };
 
   const handleSubmit = (e) => {
@@ -75,7 +80,7 @@ function ItemShow() {
       <Link to="/cart"><button>Your Cart</button></Link>
 
       <div>
-        <h2>Filters</h2>
+        <h2>Filters and Sorting</h2>
         <form onSubmit={handleSubmit}>
           <label>
             Name:
@@ -85,7 +90,15 @@ function ItemShow() {
             Price:
             <input type="number" name="price" value={filters.price} onChange={handleFilterChange} />
           </label>
-          <button type="submit">Apply Filters</button>
+          <label>
+            Sort By:
+            <select value={sort} onChange={handleSortChange}>
+              <option value="">Select</option>
+              <option value="name">Name</option>
+              <option value="price">Price</option>
+            </select>
+          </label>
+          <button type="submit">Apply</button>
         </form>
       </div>
 
